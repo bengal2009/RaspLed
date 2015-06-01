@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="YeeLed" type="Run as a raspberry pi Java application" factoryName="Raspberry PI">
+  <configuration default="false" name="YeeLed" type="Run as a raspberry pi Java application" factoryName="Raspberry PI" editBeforeRun="true">
     <option name="classesDirectory" />
     <option name="hostname" value="192.168.10.116" />
     <option name="mainclass" value="YeeLed" />
     <option name="password" value="raspberry" />
-    <option name="port" value="" />
+    <option name="port" value="22" />
     <option name="runAsRoot" value="true" />
     <option name="username" value="pi" />
     <option name="mainclass" value="YeeLed" />

@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="pi4j-core">
+    <CLASSES>
+      <root url="jar://C:/JavaLib/p4jlib/pi4j-core.jar!/" />
+      <root url="jar://C:/JavaLib/slf4j-1.7.12/log4j-over-slf4j-1.7.12.jar!/" />
+      <root url="jar://C:/JavaLib/slf4j-1.7.12/slf4j-api-1.7.12.jar!/" />
+      <root url="jar://C:/JavaLib/slf4j-1.7.12/slf4j-log4j12-1.7.12.jar!/" />
+      <root url="jar://C:/JavaLib/p4jlib/slf4j-simple-1.7.12.jar!/" />
+      <root url="jar://C:/JavaLib/slf4j-1.7.12/integration/lib/slf4j.jar!/" />
+      <root url="jar://C:/JavaLib/slf4j-1.7.12/integration/lib/slf4j-jdk14-1.7.12.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
