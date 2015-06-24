@@ -26,7 +26,7 @@ public class FC04 {
                     if(event.getState()== PinState.HIGH) {
                         System.out.println("Voice up!");
                         try {
-                            Thread.sleep(3000);
+                            Thread.sleep(5000);
                         } catch (Exception E) {
                         }
                     }
