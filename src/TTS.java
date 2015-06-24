@@ -40,10 +40,79 @@ public class TTS {
 
 */
 //        System.out.println(serverURL.toString());
-        method3();
+        DispTime();
         ReadMP3();
     }
+    private static void DispTime() throws Exception {
+        HttpURLConnection conn = (HttpURLConnection) new URL("http://tsn.baidu.com/text2audio").openConnection();
+        String USER_AGENT = "Mozilla/5.0";
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = new Date();
+//        System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
+        String urlParameters =
+//                "tex=" + URLEncoder.encode("?A?n", "BIG5") +
+                "tex="  +"%e7%8e%b0%e5%9c%a8%e6%97%b6%e9%97%b4"+
+                        URLEncoder.encode(dateFormat.format(date), "utf-8")+
+                        /*"tex="  +"%e7%8e%b0%e5%9c%a8%e6%97%b6%e9%97%b4"+
+                                URLEncoder.encode(dateFormat.format(date), "utf-8") +*/
+//                "tex="+ConvUrl("??b??")+
+                        "&cuid=" + cuid +
+                        "&ctp=1"+"&tok="+token+"&lan=zh";
+//        tex=?A?n&cuid=xxx&ctp=1&tok=24.c5e6897f4ff7b0af2303baf572fcc56e.2592000.1428462020.282335-288453
+        conn.setRequestProperty("User-Agent", USER_AGENT);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type",
+                "application/x-www-form-urlencoded");
+        conn.setRequestProperty("Content-Language", "utf-8");
 
+//        System.out.println(urlParameters.toString());
+
+//        System.out.println("Tok:" + token + " cuid:" + cuid);
+        // add request header
+//        conn.setRequestMethod("POST");
+        /*conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type","application/json; charset=utf-8");
+*/
+        conn.setDoInput(true);
+        conn.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+        wr.writeBytes(urlParameters.toString());
+        wr.flush();
+        wr.close();
+        if (conn.getResponseCode() != 200) {
+            // request error
+            System.out.println(conn.getResponseCode());
+        }
+        InputStream is = conn.getInputStream();
+        FileOutputStream fos = new FileOutputStream(new File(testFileName));
+        long length=0;
+        byte[] buffer = new byte[1024];
+
+
+
+        while((length=is.read(buffer,0,1024))>0){
+//            System.out.println(length);
+            fos.write(buffer,0,(int)length);
+
+        }
+
+
+        fos.flush();
+        fos.close();
+        /*DataInputStream dis = new DataInputStream(conn.getInputStream());
+        FileOutputStream fos = new FileOutputStream(new File(testFileName));
+
+        long length=0;
+        byte[] buffer = new byte[1024];
+        while((length=dis.read(buffer,0,1024))>0){
+            fos.write(buffer,0,(int)length);
+
+        }
+        fos.flush();
+        fos.close();*/
+//        printResponse(conn);
+    }
     private static void method3() throws Exception {
         HttpURLConnection conn = (HttpURLConnection) new URL("http://tsn.baidu.com/text2audio").openConnection();
         String USER_AGENT = "Mozilla/5.0";
