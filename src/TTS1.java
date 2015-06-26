@@ -1,7 +1,9 @@
 /**
  * Created by Lin on 2015/6/24.
  */
+
 import org.json.JSONObject;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,7 +16,7 @@ import java.util.Date;
  * Created by Lin on 2015/6/4.
  * http://tool.chinaz.com/Tools/URLEncode.aspx
  */
-public class TTS {
+public class TTS1 {
     //    private static final String serverURL = "http://tsn.baidu.com/text2audio";
     //private static String serverURL = "http://tsn.baidu.com/text2audio?lan=zh&cuid=6131442&ctp=1&tok=";
     private static StringBuilder serverURL=new StringBuilder();
@@ -41,79 +43,64 @@ public class TTS {
 */
 //        System.out.println(serverURL.toString());
         DispTime();
-        ReadMP3("now.mp3");
-        ReadMP3("sound.mp3");
+//        ReadMP3("now.mp3");
+//        ReadMP3("sound.mp3");
     }
     private static void DispTime() throws Exception {
-        HttpURLConnection conn = (HttpURLConnection) new URL("http://tsn.baidu.com/text2audio").openConnection();
+
         String USER_AGENT = "Mozilla/5.0";
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         DateFormat dateFormat1 = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
+        String Hourstr[]={"9:00","10:00","11:00","12:00","13:00","14:00",
+                "15:00","16:00","17:00","18:00"};
+        String Filename;
 //        System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
-        String urlParameters =
-//                "tex=" + URLEncoder.encode("?A?n", "BIG5") +
-//                "tex="  +"%e7%8e%b0%e5%9c%a8%e6%97%b6%e9%97%b4"+
-                "tex="  +
-                        URLEncoder.encode(dateFormat.format(date), "utf-8")+
-                        /*"tex="  +"%e7%8e%b0%e5%9c%a8%e6%97%b6%e9%97%b4"+
-                                URLEncoder.encode(dateFormat.format(date), "utf-8") +*/
-//                "tex="+ConvUrl("??b??")+
-                        "&cuid=" + cuid +
-                        "&ctp=1"+"&tok="+token+"&lan=zh";
+
+        for(Integer i=0;i<Hourstr.length;i++) {
+            HttpURLConnection conn = (HttpURLConnection) new URL("http://tsn.baidu.com/text2audio").openConnection();
+            String[] aArray =Hourstr[i].split(":");
+            Filename=aArray[0]+".mp3";
+            System.out.println(Filename);
+           String urlParameters =
+                           "tex=" +
+                            URLEncoder.encode(Hourstr[i], "utf-8") +
+                            "&cuid=" + cuid +
+                            "&ctp=1" + "&tok=" + token + "&lan=zh";
 //        tex=?A?n&cuid=xxx&ctp=1&tok=24.c5e6897f4ff7b0af2303baf572fcc56e.2592000.1428462020.282335-288453
-        conn.setRequestProperty("User-Agent", USER_AGENT);
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type",
-                "application/x-www-form-urlencoded");
-        conn.setRequestProperty("Content-Language", "utf-8");
-
-//        System.out.println(urlParameters.toString());
-
-//        System.out.println("Tok:" + token + " cuid:" + cuid);
-        // add request header
-//        conn.setRequestMethod("POST");
-        /*conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type","application/json; charset=utf-8");
-*/
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-        wr.writeBytes(urlParameters.toString());
-        wr.flush();
-        wr.close();
-        if (conn.getResponseCode() != 200) {
-            // request error
-            System.out.println(conn.getResponseCode());
-        }
-        InputStream is = conn.getInputStream();
-        FileOutputStream fos = new FileOutputStream(new File(testFileName));
-        long length=0;
-        byte[] buffer = new byte[1024];
+            conn.setRequestProperty("User-Agent", USER_AGENT);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Language", "utf-8");
+           conn.setRequestProperty("Content-Type","application/json; charset=utf-8");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+            wr.writeBytes(urlParameters.toString());
+            wr.flush();
+            wr.close();
+            if (conn.getResponseCode() != 200) {
+                // request error
+                System.out.println(conn.getResponseCode());
+            }
+            InputStream is = conn.getInputStream();
+            FileOutputStream fos = new FileOutputStream(new File(Filename));
+            long length = 0;
+            byte[] buffer = new byte[1024];
 
 
-
-        while((length=is.read(buffer,0,1024))>0){
+            while ((length = is.read(buffer, 0, 1024)) > 0) {
 //            System.out.println(length);
-            fos.write(buffer,0,(int)length);
+                fos.write(buffer, 0, (int) length);
 
+            }
+
+
+            fos.flush();
+            fos.close();
+            conn.disconnect();
         }
-
-
-        fos.flush();
-        fos.close();
-        /*DataInputStream dis = new DataInputStream(conn.getInputStream());
-        FileOutputStream fos = new FileOutputStream(new File(testFileName));
-
-        long length=0;
-        byte[] buffer = new byte[1024];
-        while((length=dis.read(buffer,0,1024))>0){
-            fos.write(buffer,0,(int)length);
-
-        }
-        fos.flush();
-        fos.close();*/
-//        printResponse(conn);
     }
     private static void method3() throws Exception {
         HttpURLConnection conn = (HttpURLConnection) new URL("http://tsn.baidu.com/text2audio").openConnection();
@@ -185,97 +172,7 @@ public class TTS {
         fos.close();*/
 //        printResponse(conn);
     }
-    private static void method1() throws Exception {
-        HttpURLConnection conn = (HttpURLConnection) new URL(serverURL.toString()).openConnection();
-        String USER_AGENT = "Mozilla/5.0";
-        conn.setRequestProperty("User-Agent", USER_AGENT);
 
-//        File mp3File = new File(testFileName);
-        // construct params
-        JSONObject params = new JSONObject();
-        params.put("tex", "Hello");
-        params.put("cuid", cuid);
-        params.put("ctp", "1");
-//        params.put("lan", "zh");
-        params.put("tok", token);
-
-
-//        System.out.println("Tok:" + token + " cuid:" + cuid);
-        // add request header
-//        conn.setRequestMethod("POST");
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-Type", "audio/mp3; charset=utf-8");
-
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-        /*DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-        System.out.println(params.toString());
-        wr.writeBytes(params.toString());
-        wr.flush();
-        wr.close();*/
-        if (conn.getResponseCode() != 200) {
-            // request error
-            System.out.println(conn.getResponseCode());
-        }
-        InputStream is = conn.getInputStream();
-        FileOutputStream fos = new FileOutputStream(new File(testFileName));
-        long length=0;
-        byte[] buffer = new byte[1024];
-
-
-
-        while((length=is.read(buffer,0,1024))>0){
-//            System.out.println(length);
-            fos.write(buffer,0,(int)length);
-
-        }
-
-
-        fos.flush();
-        fos.close();
-        /*DataInputStream dis = new DataInputStream(conn.getInputStream());
-        FileOutputStream fos = new FileOutputStream(new File(testFileName));
-
-        long length=0;
-        byte[] buffer = new byte[1024];
-        while((length=dis.read(buffer,0,1024))>0){
-            fos.write(buffer,0,(int)length);
-
-        }
-        fos.flush();
-        fos.close();*/
-//        printResponse(conn);
-    }
-    private static void method2() throws Exception {
-        File pcmFile = new File(testFileName);
-        HttpURLConnection conn = (HttpURLConnection) new URL(serverURL
-                + "?cuid=" + cuid + "&token=" + token).openConnection();
-
-        // add request header
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "audio/amr; rate=8000");
-
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-
-        // send request
-       /* DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-        wr.write(WriteFile(pcmFile));
-        wr.flush();
-        wr.close();*/
-        DataInputStream dis = new DataInputStream(conn.getInputStream());
-        FileOutputStream fos = new FileOutputStream(new File(testFileName) );
-
-        long length=0;
-        byte[] buffer = new byte[1024];
-        while((length=dis.read(buffer,0,1024))>0){
-            fos.write(buffer, 0, (int) length);
-
-        }
-        fos.flush();
-        fos.close();
-        printResponse(conn);
-    }
     private static void getToken() throws Exception {
         String getTokenURL = "https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials" +
                 "&client_id=" + apiKey + "&client_secret=" + secretKey;
