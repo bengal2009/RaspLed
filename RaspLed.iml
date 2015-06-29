@@ -54,5 +54,15 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://C:/JavaLib/json" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://C:/JavaLib/json" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>
