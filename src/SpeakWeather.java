@@ -2,21 +2,23 @@
  * Created by Lin on 2015/6/24.
  */
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+//import net.sf.json.JSONException;
 
 /**
  * Created by Lin on 2015/6/4.
  * http://tool.chinaz.com/Tools/URLEncode.aspx
  */
-public class SpeakVoice {
+public class SpeakWeather {
     //    private static final String serverURL = "http://tsn.baidu.com/text2audio";
     //private static String serverURL = "http://tsn.baidu.com/text2audio?lan=zh&cuid=6131442&ctp=1&tok=";
     private static StringBuilder serverURL=new StringBuilder();
@@ -27,32 +29,88 @@ public class SpeakVoice {
     private static final String secretKey = "5eaad29500bcbd35c84bf6bfac5e9190";
     private static final String cuid = "6131442";
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
+       /* String TempStr;
+        TempStr=GetBaiduWeather();
         getToken();
         serverURL.append("http://tsn.baidu.com/text2audio?lan=zh&cuid=6131442&vol=9&ctp=1&tok=");
         serverURL.append(token + "&tex=");
-        //%e7%8e%b0%e5%9c%a8%e6%97%b6%e9%97%b4
-//        System.out.println(URLEncoder.encode("??b??", "GBK"));
-        serverURL.append(URLEncoder.encode("??b??", "utf-8"));
-//        serverURL =serverURL+"&tex="+  URLEncoder.encode("??b??", "GBK"); ;
-//        serverURL =serverURL+"&tex=this is a book";
-       /* StringBuilder sb=new StringBuilder();
-        sb.append(sb);
-        sb.append("??b??");
-
-*/
-//        System.out.println(serverURL.toString());
-        ReadMP3("now.mp3");
-        ReadTime();
+        serverURL.append(URLEncoder.encode(TempStr, "utf-8"));
+        System.out.println(TempStr.toString());
+        System.out.println(serverURL.toString());*/
+//        DispTime();
+//        ReadMP3("now.mp3");
 //        ReadMP3("sound.mp3");
     }
-    private static void ReadTime() throws Exception {
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("HH");
-//        System.out.println("/home/pi/prog/javatest/out/production/RaspLed/voice/" + dateFormat.format(date)+".mp3");
-        ReadMP3("/home/pi/prog/javatest/out/production/RaspLed/voice/" + dateFormat.format(date)+".mp3");
-        ReadMP3("/home/pi/prog/javatest/out/production/RaspLed/weather.mp3");
+    private static String GetBaiduWeather() throws IOException ,NullPointerException
+    {
+        String Ctiyid;
+        String Wetstr="";
+        URLConnection connectionData;
+        StringBuilder sb= new StringBuilder();
+        BufferedReader br;// ???data??u?y
+        net.sf.json.JSONObject jsonData;
+        net.sf.json.JSONObject info;
+        URL url = new URL("http://api.map.baidu.com/telematics/v3/weather?location=%E4%B8%8A%E6%B5%B7&output=json&ak=Ib0QNBwBbmsdYRq2EHMI18jp");
+        connectionData = url.openConnection();
+        connectionData.setConnectTimeout(1000);
+        try {
+            br = new BufferedReader(new InputStreamReader(
+                    connectionData.getInputStream(), "UTF-8"));
+//            sb = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null)
+                sb.append(line);
+        } catch (SocketTimeoutException e) {
+            System.out.println("????W?");
+        } catch (FileNotFoundException e) {
+            System.out.println("?[????X?");
+        }
+        String datas = sb.toString();
+        jsonData = net.sf.json.JSONObject.fromObject(datas);
+        if (jsonData.getInt("error") != 0) {
+            return "none";
+        }
+        String date = jsonData.getString("date");
+        System.out.println(date);
+        JSONArray results = jsonData.getJSONArray("results");
+        net.sf.json.JSONObject results0 = results.getJSONObject(0);
+        String location = results0.getString("currentCity");
+        System.out.println(location);
+        int pmTwoPointFive;
 
+        if (results0.getString("pm25").isEmpty()) {
+            pmTwoPointFive = 0;
+        } else {
+            pmTwoPointFive = results0.getInt("pm25");
+        }
+        System.out.println(pmTwoPointFive);
+        try {
+            JSONArray weather_data = results0.getJSONArray("weather_data");
+            net.sf.json.JSONObject index0 = weather_data.getJSONObject(0);//穿衣
+            String DATESTR,FORCTEMP,WIND,WEATHER,CURTEMP;
+            DATESTR=index0.getString("date");
+            System.out.println(DATESTR);
+            FORCTEMP=index0.getString("temperature");
+            System.out.println(FORCTEMP);
+            WIND=index0.getString("wind");
+            System.out.println(WIND);
+            WEATHER=index0.getString("weather");
+            System.out.println(WEATHER);
+//            周三 08月27日 (??：29℃)","
+            Integer StartNum,EndNum;
+//            StartNum=DATESTR.indexOf("：");
+            EndNum=DATESTR.indexOf(")");
+            CURTEMP=DATESTR.substring(EndNum - 3, EndNum);
+            Wetstr="?在外面?度:"+CURTEMP+"今天?度"+FORCTEMP+" "+WEATHER;
+//            System.out.println(Wetstr);
+            return Wetstr;
+
+
+        } catch (JSONException jsonExp) {
+            System.out.println(jsonExp.toString());
+        }
+        return Wetstr;
     }
     private static void DispTime() throws Exception {
 
@@ -75,6 +133,7 @@ public class SpeakVoice {
                             URLEncoder.encode(Hourstr[i], "utf-8") +
                             "&cuid=" + cuid +
                             "&ctp=1" + "&tok=" + token + "&lan=zh";
+//        tex=?A?n&cuid=xxx&ctp=1&tok=24.c5e6897f4ff7b0af2303baf572fcc56e.2592000.1428462020.282335-288453
             conn.setRequestProperty("User-Agent", USER_AGENT);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type",
@@ -252,12 +311,12 @@ public class SpeakVoice {
 
             String line=null;
 
-            /*while((line=input.readLine()) != null) {
+            while((line=input.readLine()) != null) {
                 System.out.println(line);
-            }*/
+            }
 
             int exitVal = pr.waitFor();
-//            System.out.println("Exited with error code "+exitVal);
+            System.out.println("Exited with error code "+exitVal);
 
         } catch(Exception e) {
             System.out.println(e.toString());

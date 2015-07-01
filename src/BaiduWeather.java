@@ -2,6 +2,8 @@
  * Created by Lin on 2015/6/26.
  */
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -66,7 +68,7 @@ public class BaiduWeather {
 
 
 
-    public BaiduWeather(String Cityid) throws IOException ,NullPointerException{
+    public BaiduWeather(String Cityid) throws IOException ,NullPointerException {
         // �ѪR����ip�a�}
 
         this.Ctiyid = Cityid;
@@ -88,10 +90,47 @@ public class BaiduWeather {
         }
         String datas = sb.toString();
         jsonData = JSONObject.fromObject(datas);
-        info = jsonData.getJSONObject("results");
-        city = info.getString("currentCity").toString();
+        if (jsonData.getInt("error") != 0) {
+            return;
+        }
+        String date = jsonData.getString("date");
+        System.out.println(date);
+        JSONArray results = jsonData.getJSONArray("results");
+        JSONObject results0 = results.getJSONObject(0);
+        String location = results0.getString("currentCity");
+        System.out.println(location);
+        int pmTwoPointFive;
 
-        System.out.println(city);
+        if (results0.getString("pm25").isEmpty()) {
+            pmTwoPointFive = 0;
+        } else {
+            pmTwoPointFive = results0.getInt("pm25");
+        }
+        System.out.println(pmTwoPointFive);
+        try {
+            JSONArray weather_data = results0.getJSONArray("weather_data");
+            JSONObject index0 = weather_data.getJSONObject(0);//穿衣
+            String DATESTR,FORCTEMP,WIND,WEATHER,CURTEMP;
+            DATESTR=index0.getString("date");
+            System.out.println(DATESTR);
+            FORCTEMP=index0.getString("temperature");
+            System.out.println(FORCTEMP);
+            WIND=index0.getString("wind");
+            System.out.println(WIND);
+            WEATHER=index0.getString("weather");
+            System.out.println(WEATHER);
+//            周三 08月27日 (实时：29℃)","
+            Integer StartNum,EndNum;
+//            StartNum=DATESTR.indexOf("：");
+            EndNum=DATESTR.indexOf(")");
+            CURTEMP=DATESTR.substring(EndNum-3,EndNum);
+            String Wetstr="现在外面温度:"+CURTEMP+"今天温度"+FORCTEMP+WEATHER;
+            System.out.println(Wetstr);
+
+
+        } catch (JSONException jsonExp) {
+            System.out.println(jsonExp.toString());
+        }
     }
     public static void main(String[] args) {
         try {
