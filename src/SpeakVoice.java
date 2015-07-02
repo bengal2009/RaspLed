@@ -50,6 +50,7 @@ public class SpeakVoice {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("HH");
 //        System.out.println("/home/pi/prog/javatest/out/production/RaspLed/voice/" + dateFormat.format(date)+".mp3");
+//        System.out.println("/home/pi/prog/javatest/out/production/RaspLed/voice/" + dateFormat.format(date)+".mp3");
         ReadMP3("/home/pi/prog/javatest/out/production/RaspLed/voice/" + dateFormat.format(date)+".mp3");
         ReadMP3("/home/pi/prog/javatest/out/production/RaspLed/weather.mp3");
 
