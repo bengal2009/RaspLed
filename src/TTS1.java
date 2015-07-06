@@ -64,9 +64,9 @@ public class TTS1 {
             System.out.println(Filename);
            String urlParameters =
                            "tex=" +
-                            URLEncoder.encode(Hourstr[i], "utf-8") +
+                            URLEncoder.encode("现在时间"+Hourstr[i], "utf-8") +
                             "&cuid=" + cuid +
-                            "&ctp=1" + "&tok=" + token + "&lan=zh";
+                            "&ctp=1" + "&tok=" + token + "&lan=zh&vol=9";
 //        tex=?A?n&cuid=xxx&ctp=1&tok=24.c5e6897f4ff7b0af2303baf572fcc56e.2592000.1428462020.282335-288453
             conn.setRequestProperty("User-Agent", USER_AGENT);
             conn.setRequestMethod("POST");

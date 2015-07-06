@@ -107,7 +107,7 @@ public class BaiduWeatherVoice {
                     "tex="  +
                             URLEncoder.encode(s1, "utf-8")+
                             "&cuid=" + cuid +
-                            "&ctp=1"+"&tok="+token+"&lan=zh";
+                            "&ctp=1"+"&tok="+token+"&lan=zh&vol=9";
             conn.setRequestProperty("User-Agent", USER_AGENT);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type",

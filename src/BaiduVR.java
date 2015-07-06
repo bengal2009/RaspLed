@@ -78,8 +78,8 @@ public class BaiduVR {
             {
                 System.out.println("False");
             }
-            System.out.println(RespStr);
-            System.out.println(jsonData.getString("err_msg"));
+            /*System.out.println(RespStr);
+            System.out.println(jsonData.getString("err_msg"));*/
         }
 
     }

@@ -28,12 +28,12 @@ public class SpeakVoice {
     private static final String cuid = "6131442";
 
     public static void main(String[] args) throws Exception {
-        getToken();
-        serverURL.append("http://tsn.baidu.com/text2audio?lan=zh&cuid=6131442&vol=9&ctp=1&tok=");
-        serverURL.append(token + "&tex=");
+//        getToken();
+//        serverURL.append("http://tsn.baidu.com/text2audio?lan=zh&cuid=6131442&vol=9&ctp=1&tok=");
+//        serverURL.append(token + "&tex=");
         //%e7%8e%b0%e5%9c%a8%e6%97%b6%e9%97%b4
 //        System.out.println(URLEncoder.encode("??b??", "GBK"));
-        serverURL.append(URLEncoder.encode("??b??", "utf-8"));
+//        serverURL.append(URLEncoder.encode("??b??", "utf-8"));
 //        serverURL =serverURL+"&tex="+  URLEncoder.encode("??b??", "GBK"); ;
 //        serverURL =serverURL+"&tex=this is a book";
        /* StringBuilder sb=new StringBuilder();
@@ -42,7 +42,7 @@ public class SpeakVoice {
 
 */
 //        System.out.println(serverURL.toString());
-        ReadMP3("now.mp3");
+//        ReadMP3("now.mp3");
         ReadTime();
 //        ReadMP3("sound.mp3");
     }
