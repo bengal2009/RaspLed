@@ -142,4 +142,13 @@ public class Weather {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Created by Lin on 2015/7/8.
+     */
+    public static class test {
+        public static void main(String[] args) throws Exception {
+            System.out.println("TEST");
+        }
+    }
 }
