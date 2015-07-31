@@ -112,13 +112,13 @@ public class BaiduWeather {
             JSONObject index0 = weather_data.getJSONObject(0);//穿衣
             String DATESTR,FORCTEMP,WIND,WEATHER,CURTEMP;
             DATESTR=index0.getString("date");
-            System.out.println(DATESTR);
+//            System.out.println(DATESTR);
             FORCTEMP=index0.getString("temperature");
-            System.out.println(FORCTEMP);
+//            System.out.println(FORCTEMP);
             WIND=index0.getString("wind");
-            System.out.println(WIND);
+//            System.out.println(WIND);
             WEATHER=index0.getString("weather");
-            System.out.println(WEATHER);
+//            System.out.println(WEATHER);
 //            周三 08月27日 (实时：29℃)","
             Integer StartNum,EndNum;
 //            StartNum=DATESTR.indexOf("：");
